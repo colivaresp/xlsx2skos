@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF
+	xmlns="{{ metadata.namespace }}"
+	xmlns:owl="http://www.w3.org/2002/07/owl#"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
+	xmlns:skos="http://www.w3.org/2004/02/skos/core#"
+	xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+	xmlns:dct="http://purl.org/dc/terms/"
+	xmlns:foaf="http://xmlns.com/foaf/0.1/"
+	xmlns:skosxl="http://www.w3.org/2008/05/skos-xl#"
+	xmlns:sw-vocab="http://www.w3.org/2003/06/sw-vocab-status/ns#"
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+	xmlns:dc="http://purl.org/dc/elements/1.1/">
+
+<rdf:Description rdf:about="{{ metadata.namespace }}">
+	<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#ConceptScheme"/>
+</rdf:Description>
+
+{% for concept in concepts %}
+	<!-- {{ '%-60s'|format(concept.prefLabel_es) }} -->
+	<!-- {{ '%-60s'|format(concept.uri) }} -->
+
+	<rdf:Description rdf:about="{{ concept.uri }}">
+		<rdf:type rdf:resource="http://www.w3.org/2004/02/skos/core#Concept"/>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="{{ concept.uri }}">
+		<skos:inScheme rdf:resource="{{ metadata.namespace }}"/>
+	</rdf:Description>
+
+	{% if concept.broader is none %}   
+	<rdf:Description rdf:about="{{ concept.uri }}">
+		<skos:topConceptOf rdf:resource="{{ metadata.namespace }}"/>
+	</rdf:Description>
+	{% else %}
+	<rdf:Description rdf:about="{{ concept.uri }}">
+		<skos:broader rdf:resource="{{ concept.broader }}"/>
+	</rdf:Description>
+	{% endif %}
+
+	{% if concept.definition_es is not none %}
+	<rdf:Description rdf:about="{{ concept.uri }}">
+		<skos:definition rdf:resource="{{ concept.uri }}_def_es"/>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="{{ concept.uri }}_def_es">
+		<rdf:value xml:lang="es">{{ concept.definition_es }}</rdf:value>
+	</rdf:Description>
+	{% endif %}
+
+	{% if concept.prefLabel_es is not none %}
+	<rdf:Description rdf:about="{{ concept.uri }}">
+		<skosxl:prefLabel rdf:resource="{{ concept.uri }}_pref_label_es"/>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="{{ concept.uri }}_pref_label_es">
+		<rdf:type rdf:resource="http://www.w3.org/2008/05/skos-xl#Label"/>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="{{ concept.uri }}_pref_label_es">
+		<skosxl:literalForm xml:lang="es">{{ concept.prefLabel_es }}</skosxl:literalForm>
+	</rdf:Description>
+	{% endif %}
+
+	{% if concept.prefLabel_en is not none %}
+	<rdf:Description rdf:about="{{ concept.uri }}">
+		<skosxl:prefLabel rdf:resource="{{ concept.uri }}_pref_label_en"/>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="{{ concept.uri }}_pref_label_en">
+		<rdf:type rdf:resource="http://www.w3.org/2008/05/skos-xl#Label"/>
+	</rdf:Description>
+
+	<rdf:Description rdf:about="{{ concept.uri }}_pref_label_en">
+		<skosxl:literalForm xml:lang="en">{{ concept.prefLabel_en }}</skosxl:literalForm>
+	</rdf:Description>
+	{% endif %}
+	
+{% endfor %}
+</rdf:RDF>
