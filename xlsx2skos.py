@@ -48,10 +48,11 @@ def load_data(args):
 	num_rows = worksheet.nrows
 
 	metadata = {
-			"namespace": worksheet.cell_value(0, 1)
+			"title": worksheet.cell_value(0, 1),
+			"namespace": worksheet.cell_value(1, 1)
 		}
 	concepts = []
-	for row in range(3, num_rows):
+	for row in range(4, num_rows):
 		concepts.append({
 					"uri": worksheet.cell_value(row, 0),
 					"definition_es": worksheet.cell_value(row, 1) or None,
