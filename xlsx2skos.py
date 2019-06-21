@@ -46,15 +46,16 @@ def load_data(args):
 	else:
 		worksheet = workbook.sheet_by_name(args.tab)
 	num_rows = worksheet.nrows
+	
+	metadata = dict()
+	for row in range(6):
+		metadata[worksheet.cell_value(row, 0)] = worksheet.cell_value(row, 1)
 
-	metadata = {
-			"title": worksheet.cell_value(0, 1),
-			"namespace": worksheet.cell_value(1, 1)
-		}
 	concepts = []
-	for row in range(4, num_rows):
+	for row in range(8, num_rows):
 		concepts.append({
-					"uri": worksheet.cell_value(row, 0),
+					"term": worksheet.cell_value(row, 0),
+					"uri": metadata["preffix"] + worksheet.cell_value(row, 0),
 					"definition_es": worksheet.cell_value(row, 1) or None,
 					"prefLabel_es": worksheet.cell_value(row, 2) or None,
 					"prefLabel_en": worksheet.cell_value(row, 3) or None,
