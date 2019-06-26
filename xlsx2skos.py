@@ -34,6 +34,11 @@ def parse_args(args):
 						help="Nombre de la carpeta de plantillas. Default: templates",
 						default="templates",
 						metavar="<dirname>")
+	parser.add_argument("-m",
+						"--term",
+						help="Incluir term en índices",
+						default=False, 
+						action='store_true')	
 
 	return parser.parse_args(args)
 	
@@ -50,13 +55,14 @@ def load_data(args):
 	metadata = dict()
 	for row in range(6):
 		metadata[worksheet.cell_value(row, 0)] = worksheet.cell_value(row, 1)
+		metadata['term'] = args.term
 
 	concepts = []
 	for row in range(8, num_rows):
 		concept = {
 					"term": worksheet.cell_value(row, 0),
 					"uri": metadata["preffix"] + worksheet.cell_value(row, 0),
-#					"definition_es": worksheet.cell_value(row, 1) or None,
+					"definition_es": worksheet.cell_value(row, 1) or None,
 					"prefLabel_es": worksheet.cell_value(row, 2) or None,
 					"prefLabel_en": worksheet.cell_value(row, 3) or None,
 					"broader": worksheet.cell_value(row, 4) or None,

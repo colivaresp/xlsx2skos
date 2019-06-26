@@ -1,6 +1,6 @@
 {% for concept in tree %}
     <li>
-         <a href="#{{ concept.term }}"> -- {{ concept.prefLabel_es }}</a>
+         <a href="#{{ concept.term }}"> {% if metadata.term %}{{ concept.term }} --{% endif %} {{ concept.prefLabel_es }}</a>
         {% if concept.children|length %}
             <ul>
                 {% with tree=concept.children %}
