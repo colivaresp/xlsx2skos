@@ -92,12 +92,9 @@ table.ABOUT {
       </tbody>
     </table>
 
+
     <ul>
-	{% for concept in concepts %}
-      <li class="TERM-TOP">
-        <a href="#{{ concept.term }}"> -- {{ concept.prefLabel_es }}</a>
-      </li>
-	{% endfor %}
+		{% include "html_children.html" %}
 	</ul>
 
 

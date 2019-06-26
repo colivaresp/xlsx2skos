@@ -53,16 +53,31 @@ def load_data(args):
 
 	concepts = []
 	for row in range(8, num_rows):
-		concepts.append({
+		concept = {
 					"term": worksheet.cell_value(row, 0),
 					"uri": metadata["preffix"] + worksheet.cell_value(row, 0),
-					"definition_es": worksheet.cell_value(row, 1) or None,
+#					"definition_es": worksheet.cell_value(row, 1) or None,
 					"prefLabel_es": worksheet.cell_value(row, 2) or None,
 					"prefLabel_en": worksheet.cell_value(row, 3) or None,
-					"broader": worksheet.cell_value(row, 4) or None
-				})
+					"broader": worksheet.cell_value(row, 4) or None,
+					"children": []
+				}
+		concepts.append(concept)
 
-	return { "metadata": metadata, "concepts": concepts }
+	index = {}
+	for i in range(len(concepts)):
+		index[concepts[i]["term"]] = i
+
+	for concept in concepts:
+		if concept["broader"] is not None:
+			concepts[index[concept["broader"]]]["children"].append(concept)
+
+	tree = []
+	for concept in concepts:
+		if concept["broader"] is None:
+			tree.append(concept)
+
+	return { "metadata": metadata, "concepts": concepts, "tree": tree }
 
 
 def render(args, data_dict):

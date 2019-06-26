@@ -1,0 +1,12 @@
+{% for concept in tree %}
+    <li>
+         <a href="#{{ concept.term }}"> -- {{ concept.prefLabel_es }}</a>
+        {% if concept.children|length %}
+            <ul>
+                {% with tree=concept.children %}
+                {% include "html_children.html" %}
+                {% endwith %}
+            </ul>
+        {% endif %}
+    </li>
+{% endfor %}
