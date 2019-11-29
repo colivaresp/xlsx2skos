@@ -107,14 +107,18 @@ table.ABOUT {
           <td class="CONCEPT-FIELD">URI</td>
           <td class="conceptURI">{{ concept.uri }}</td>
         </tr>
+	{% if concept.definition_es is not none %}
         <tr>
           <td class="CONCEPT-FIELD">Definition (es)</td>
           <td class="SN">{{ concept.definition_es }}</td>
         </tr>
+	{% endif %}
+	{% if concept.prefLabel_es is not none %}
         <tr>
           <td class="CONCEPT-FIELD">Preferred label (es)</td>
           <td class="PREF">{{ concept.prefLabel_es }}</td>
         </tr>
+	{% endif %}
 	{% if concept.prefLabel_en is not none %}
         <tr>
           <td class="CONCEPT-FIELD">Preferred label (en)</td>
